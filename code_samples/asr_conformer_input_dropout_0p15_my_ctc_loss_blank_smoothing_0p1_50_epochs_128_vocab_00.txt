@@ -1,0 +1,493 @@
+# This proto-text contains initialization parameters for ExperimentParams.
+#
+# The following contains the top directory name of the MBT trainer.
+# $TRAINER_TOP_DIR
+#
+# The following are variables related to the "work" directory.
+# $CHECKPOINTS_DIR
+# $LOGS_DIR
+# $TEXT_LOGS_DIR
+# $RESULTS_DIR
+
+
+# TODO(chanw.com) Adds more explanation.
+# TODO(chanw.com) Moves to a note directory.
+#
+# TODO(chanw.com) Adds explanation about experimental results.
+
+# Please set the following fields:
+#
+# working_dir
+# experiment_name
+# filenames
+# trainer_params.train_dataset_source_params.class_params.filenames
+#
+## This one will show 3.93 % WER LibriSpeech test-clean and 11.78 % WER on
+#test-other when trained upto 80 epochs. The following is the result with
+# different dropout rates.
+#
+
+
+
+
+# Specifies the working_directory_name
+# (e.g.  "/home/sr6/SR_SPL/workspace/chanw.com/experiments/mbt_trainer_experiments")
+working_dir: "/home/sr3/chanw.com/experiments/cwk_trainer_experiments"
+
+# Specifies the experiment name (e.g.  "speech_ctc_simple_lstm_stack_model_libri")
+experiment_name: "asr_conformer_input_dropout_0p15_my_ctc_loss_blank_smoothing_0p1_50_epochs_128_vocab_00"
+
+dataset_operation_dict_params: {
+  # TODO(chanw.com) Consider renaming it to dataset_operation.
+  operation: {
+    key: "batch00"
+    value: {
+      # Implements a length-based batch processing.
+      class_type: TF2_DATASET
+      class_name: "BasicDatasetOperation"
+      class_params: {
+        [type.googleapi.com/learning.BasicDatasetOperationParams] {
+            batch_size: 64
+            use_cache: false
+            use_prefetch: true
+        }
+      }
+    }
+  }
+  operation: {
+    key: "parse_utterance_data_string"
+    value: {
+      class_type: TF2_DATASET
+      class_name: "DatasetWrapperOperation"
+      class_params: {
+        [type.googleapi.com/learning.DatasetWrapperOperationParams] {
+          operation_params: {
+            class_name: "UtteranceDataStringParser"
+            # class_params is not required for this operation.
+            # class_params:
+          }
+        }
+      }
+    }
+  }
+  operation: {
+    key: "acoust_feature_extraction"
+    value: {
+      class_type: TF2_DATASET
+      class_name: "UtteranceDataPreprocessor"
+      class_params: {
+        [type.googleapi.com/learning.UtteranceDataPreprocessorParams] {
+          audio_processing_operation: {
+            class_name: "WaveToFeatureTransformTF2"
+            class_params: {
+              [type.googleapi.com/learning.WaveToFeatureTransformParams] {
+                feature_type: POWER_MEL_FILTER_BANK
+                sampling_rate_hz: 16000.0
+                frame_size_sec: 0.025
+                frame_step_sec: 0.010
+                feature_size: 80
+                lower_edge_hz: 125.0
+                upper_edge_hz: 8000.0
+                filter_bank_energy_floor: 0.0
+                filter_bank_type: TF2_FILTER_BANK
+              }
+            }
+          }
+          audio_processing_operation: {
+            class_name: "MeanVarianceNormalization"
+            class_params: {
+              [type.googleapi.com/learning.MeanVarianceNormalizationParams] {
+                mean_normalization: True
+                variance_normalization: True
+              }
+            }
+          }
+          audio_processing_operation: {
+            class_name: "ChannelSelector"
+            class_params: {
+              [type.googleapi.com/learning.ChannelSelectorParams] {
+                channel_index: 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  operation: {
+    key: "label_encoding"
+    value: {
+      class_type: TF2_DATASET
+      class_name: "UtteranceDataPreprocessor"
+      class_params: {
+        [type.googleapi.com/learning.UtteranceDataPreprocessorParams] {
+          label_processing_operation: {
+            class_name: "SentencePieceTextCodec"
+            class_params: {
+              [type.googleapi.com/learning.SentencePieceTextCodecParams]  {
+                model_name: "$TRAINER_TOP_DIR/resources/libri_speech/model_unigram_128.model"
+                add_bos: True
+                add_eos: True
+                processing_mode: ENCODING
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  operation: {
+    key: "prefetch"
+    value: {
+      # Implements a length-based batch processing.
+      class_type: TF2_DATASET
+      class_name: "BasicDatasetOperation"
+      class_params: {
+        [type.googleapi.com/learning.BasicDatasetOperationParams] {
+            use_prefetch: true
+        }
+      }
+    }
+  }
+}
+
+dist_processing_params {
+  enable_distributed_training: False
+  enable_distributed_testing:  False
+}
+
+model_params: {
+  # TODO(chanw.com)
+  # Unifies the Type.
+  type: TF2_KERAS_MODEL
+  # Object name
+  class_name: "ConformerBlockStack"
+  class_params: {
+    [type.googleapis.com/learning.ConformerBlockStackParams] {
+      spec_augment_params: {
+        num_freq_masks: 2
+        max_freq_mask_size: 28
+        num_time_masks: 2
+        max_time_mask_size: 100
+      }
+
+      subsampling_params: {
+        subsampling_factor: 4
+        class_name:  "Conv1DSubsampling"
+        class_params: {
+          [type.googleapi.com/learning.Conv1DSubsamplingParams] {
+            num_filterbank_channels: 80
+            num_conv_channels: 256
+            kernel_size: 5
+          }
+        }
+      }
+
+      conformer_block_params: {
+        feed_forward_module_params: {
+          activation_type: SWISH
+          model_dim: 256
+          feedforward_dim: 1024
+          dropout_params: {
+            seq_noise_shape: NONE
+            dropout_bypass_num_examples: 1406205  # 281241 * 5.0
+            class_name: "BaselineDropout"
+            class_params: {
+              [type.googleapi.com/learning.BaselineDropoutParams] {
+                dropout_rate: 0.15
+              }
+            }
+          }
+          input_dropout: True
+        }
+
+        mhsa_module_params: {
+          model_dim: 256
+          num_heads: 4
+          relative_positional_embedding: True
+          dropout_params: {
+            seq_noise_shape: NONE
+            dropout_bypass_num_examples: 1406205  # 281241 * 2.5
+            class_name: "BaselineDropout"
+            class_params: {
+              [type.googleapi.com/learning.BaselineDropoutParams] {
+                dropout_rate: 0.15
+              }
+            }
+          }
+          input_dropout: True
+        }
+
+        convolution_module_params: {
+          conv_normalization_type: BATCH_NORM_WITH_MASK
+          #conv_normalization_type: LAYER_NORM
+          activation_type: SWISH
+          model_dim: 256
+          conv_kernel_size: 32
+          dropout_params: {
+            seq_noise_shape: NONE
+            dropout_bypass_num_examples: 1406205  # 281241 * 2.5
+            class_name: "BaselineDropout"
+            class_params: {
+              [type.googleapi.com/learning.BaselineDropoutParams] {
+                dropout_rate: 0.15
+              }
+            }
+          }
+          input_dropout: True
+        }
+      }
+
+      dropout_params: {
+        seq_noise_shape: NONE
+        dropout_bypass_num_examples: 1406205  # 281241 * 2.5
+        class_name: "BaselineDropout"
+        class_params: {
+          [type.googleapi.com/learning.BaselineDropoutParams] {
+            dropout_rate: 0.15
+          }
+        }
+      }
+      input_dropout: True
+      num_conformer_blocks: 16
+      num_classes: 129
+    }
+  }
+}
+
+model_checkpoint_params: {
+  # model_name:
+  checkpoint_format: KERAS_SAVED_MODEL
+  weights_only: False
+  training: {
+    saving_period_epochs: 1
+  }
+  testing: {
+    checkpoint_selection: LATEST
+    # checkpoint_selection: CHECKPOINT_NAMES
+    # checkpoint_names: "weights.25-35344.6836"
+  }
+}
+
+trainer_params: {
+  train_dataset_source_params: {
+    type: TF2_DATASET
+    # Factory name
+    class_name: "TFRecordDataset"
+    class_params: {
+      [type.googleapi.com/learning.TFRecordDatasetParams] {
+        filenames:"/home/sr5/DMC_Svoice/data/speech_databases/librispeech/librispeech_train-*"
+        num_parallel_reads: 10
+      }
+    }
+  }
+
+  train_dataset_pipeline_params: {
+    class_type: TF2_DATASET
+    # Object name
+    class_name: "BasicDatasetPipeline"
+    class_params: {
+      [type.googleapi.com/learning.BasicDatasetPipelineParams] {
+        operation_keys: "batch00"
+        operation_keys: "parse_utterance_data_string"
+        operation_keys: "acoust_feature_extraction"
+        operation_keys: "label_encoding"
+        operation_keys: "prefetch"
+      }
+    }
+  }
+
+  model_updater_params: {
+    class_type: TF2_KERAS
+    class_name: "SimpleSupervised"
+    class_params: {
+      [type.googleapi.com/learning.SimpleSupervisedParams] {
+        optimizer_params: {
+          class_type: TF2_KERAS
+          # Factory name
+          # The following configuration is somewhat motivated by Sec. A. 2
+          # of https://openreview.net/pdf?id=AvcfxqRy4Y
+          class_name: "AdamW"
+          class_params: {
+            [type.googleapis.comm/learning.AdamWParams] {
+              learning_rate_schedule_params: {
+                class_type: TF2_KERAS
+                class_name: "WarmupLinearDecaySchedule"
+                class_params: {
+                  [type.googleapi.com/learning.WarmupLinearDecayScheduleParams] {
+                    peak_learning_rate: 1.0e-3
+                    min_learning_rate: 1.0e-5
+                    # 281241 / 64.0  * 5  (5 epochs)
+                    warmup_steps: 21971.95
+                    # 281241 / 32.0  * 20 (20 epochs)
+                    peak_maintenance_steps: 87887.81
+                    # 1.0 / (25 * (281241 / 64.0))
+                    # Reduces the lr to 0.0 (min_learning_rate) after 2255 epochs 
+                    # when the batch size is 64.
+                    decay_rate: 9.10251e-06
+                  }
+                }
+              }
+              # The following values are from the Appendix A.2 of the following
+              # paper:.
+              # K. Shim, J. Choi, and W. Sung, "Understanding the role of self
+              # attention for efficient speech recognition", ICLR 2022.
+              beta_1: 0.9
+              beta_2: 0.999
+              epsilon: 1e-07
+              weight_decay: 0.01
+            }
+          }
+        } # optimizer_params
+
+        loss_params: {
+          class_type: TF2_KERAS
+          # Factory name
+          class_name: "ForcedAlignmentLoss"
+          class_params: {
+            [type.googleapis.com/learning.ForcedAlignmentLossParams] {
+                algorithm: CTC_LOSS
+                
+                # TODO(chanw.com) But as of now, unlike the CTC case, forced
+                # alignment does not care the blank_index as the special case.
+                # So, it doesn't make any difference.
+#                on_set_label: {
+#                }
+                blank_label: {
+                  blank_index: 0
+                }
+                smoothing_coeff: 0.1
+             }
+          }
+        } # loss_params
+
+
+#        loss_params: {
+#          class_type: TF2_KERAS
+#          # Factory name
+#          class_name: "CtcLoss"
+#          class_params: {
+#            [type.googleapis.com/learning.CtcLossParams] {
+#              from_logits: True
+#    #         If the blank is not explicitly specified, then by default,
+#    #         it becomes num_classes - 1 (the last label).
+#    #         blank_index: 128
+#    #          label_smoothing: 0.0
+#            }
+#          }
+#        } # loss_params
+
+        initial_epoch_index : 0
+        final_epoch_index : 50
+        restart_loss_ratio: 100.0
+        test_period_epoch: 10
+        tf_function_enabled: true
+
+        # The model or loss will be periodically updated on-the-fly using the
+        # callback mechanism after processing this amount of examples.
+        # If not specified, the default value is 10,000.
+        # update_period_num_examples: 10000
+
+        grad_clip: {
+          type: GLOBAL_NORM
+          value: 1.0
+        }
+
+      #  grad_acc_steps: 4
+      }
+    }
+  } # model_updater_params.
+} # trainer_params
+
+
+tester_params {
+  test_dataset_source_params: {
+    type: TF2_DATASET
+    # Factory name
+    dataset_name: "test-clean"
+    class_name: "TFRecordDataset"
+    class_params: {
+      [type.googleapi.com/learning.TFRecordDatasetParams] {
+        filenames: "/home/sr5/SR_SPL_DATA/librispeech/librispeech_test-clean-00000-00001"
+# Simple sanity check case.
+#        filenames: "$TRAINER_TOP_DIR/dataset_samples/speech/libri_speech_train_100_selected.tfrecord"
+        num_parallel_reads: 10
+      }
+    }
+  }
+
+test_dataset_source_params: {
+    type: TF2_DATASET
+    dataset_name: "test-other"
+    # Factory name
+    class_name: "TFRecordDataset"
+    class_params: {
+      [type.googleapi.com/learning.TFRecordDatasetParams] {
+        filenames: "/home/sr5/SR_SPL_DATA/librispeech/librispeech_test-other-00000-00001"
+# Simple sanity check case.
+#        filenames: "$TRAINER_TOP_DIR/dataset_samples/speech/libri_speech_train_100_selected.tfrecord"
+        num_parallel_reads: 10
+      }
+    }
+  }
+
+  test_dataset_pipeline_params: {
+    class_type: TF2_DATASET
+    # Object name
+    class_name: "BasicDatasetPipeline"
+    class_params: {
+      [type.googleapi.com/learning.BasicDatasetPipelineParams] {
+        operation_keys: "batch00"
+        operation_keys: "parse_utterance_data_string"
+        operation_keys: "acoust_feature_extraction"
+        operation_keys: "prefetch"
+      }
+    }
+  }
+
+  model_evaluator_params {
+    class_type: TF2_KERAS
+    class_name: "DefaultModelEvaluator"
+    class_params: {
+      [type.googleapi.com/learning.DefaultModelEvaluatorParams] {
+        predictor_params: {
+          type: TF2_KERAS_PREDICTOR
+          class_name: "SbaSearchPredictor"
+          class_params: {
+            [type.googleapi.com/learning.SbaSearchPredictorParams] {
+              beam_size: 32
+             # on_set_label: {
+             # }
+              blank_label: {
+                  blank_index: 0
+              }
+            }
+          }
+        }
+        post_processing_op: {
+          class_name: "SentencePieceTextCodec"
+          class_params: {
+            [type.googleapi.com/learning.SentencePieceTextCodecParams]  {
+              model_name: "$TRAINER_TOP_DIR/resources/libri_speech/model_unigram_128.model"
+              add_bos: True
+              add_eos: True
+              processing_mode: DECODING
+            }
+          }
+        }
+      }
+    }
+  }
+
+  result_processor_params: {
+    type: TF2_KERAS
+    # Object name
+    class_name: "ResultTextWriter"
+    class_params: {
+      [type.googleapi.com/learning.ResultTextWriterParams] {
+        hyp_file_name: "hyp.txt"
+        ref_file_name: "ref.txt"
+      }
+    }
+  }
+}
