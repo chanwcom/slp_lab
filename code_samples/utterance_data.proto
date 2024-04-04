@@ -1,0 +1,455 @@
+syntax = "proto2";
+//import "google/protobuf/any.proto";
+
+// TODO(chanw.com) Consider making a new proto message with the proto3 format.
+// * Use enum for atomic_type.
+// * Support compression
+
+package speech;
+
+// A protocol buffer message for storing the format of the waveform.
+message WaveHeader {
+
+  optional int32 number_of_channels = 1;
+
+  // The sampling rate of the wave data.
+  optional double sampling_rate_hz = 2;
+
+  // The atomic type of the wave data.
+  //
+  // The type MUST be one of "int8", "int16", "int32", "float32", or "float64".
+  // TODO(chanw.com) What about using the enum type instead?
+  optional string atomic_type = 3;
+}
+
+// A protocol buffer message for storing utterance information.
+message UtteranceData {
+  // A unique ID for this utterance data.
+  optional string utterance_id = 1;
+
+  // The format of the waveform data.
+  optional WaveHeader wave_header = 2;
+
+  // Buffer for storing the raw wave data.
+  //
+  // For multi-channel wave data, samples are stored in an interleaved way.
+  // Each element MUST be stored according to the little endian convention.
+  optional bytes samples = 3;
+
+  // The transcript for the speech.
+  optional string ground_truth_transcript = 4;
+
+  message NamedWaveData {
+    optional string names = 1;
+    optional WaveHeader wave_header = 2;
+    optional bytes samples = 3;
+    optional string meta_data = 4;
+  }
+
+  // Additional named wave data.
+  //
+  // This field is used when there are related wave data to the primary utterance
+  // data. For example, when samples in the field id "3" have been created
+  // using the acoustic simulator, this field may be used to store the original
+  // speech waveform, the original noise waveform, and room impulse responses,
+  // and so on.
+  repeated NamedWaveData named_wave_data = 5;
+
+  message AlignmentData {
+    optional string state_name = 1;
+    optional double start_time_sec = 2;
+    optional double ending_time_sec = 3;
+  }
+
+  // Alignment information.
+  optional AlignmentData alignment_data = 6;
+
+  message KeywordData {
+    optional string names = 1;
+
+    // Phone sequence for keyword detector
+    optional string d_phn = 2;
+
+    // e2e label for keyword detector
+    optional int32 d_e2e = 3;
+
+    // Word boundary information for keyword verifier
+    optional int32 v_wb_start = 4;
+    optional int32 v_wb_end = 5;
+
+    // Keyword label for keyword verifier
+    optional int32 v_kw = 6;
+  }
+
+  // Keyword information.
+  optional KeywordData keyword_data = 7;
+
+  // language ID
+  optional string language_id = 8;
+
+  enum DataType {
+    Old = 0;
+    KWelfareCallcenter = 1;
+    KNoisyEnvironment = 2;
+    KKidsSpeech = 3;
+    KForeignerSpeech = 4;
+    KKorengMix = 5;
+    KMainFieldMeeting = 6;
+    KLiteratureReading = 7;
+    KBroadcastDialogic = 8;
+  }
+
+  optional DataType data_type = 9;
+  optional bool asr_available = 10;
+  optional bool multiple_utterance = 11;
+
+  message MultipleTranscript {
+      optional bool asr_available = 1;
+      optional int32 start_idx = 2;
+      optional int32 end_idx = 3;
+      optional string ground_truth_transcript = 4;
+  }
+  repeated MultipleTranscript multiple_ground_truth_transcript = 12;
+
+  // message types
+
+  optional KWelfareCallcenter k_welfare_callcenter = 13;
+  optional KNoisyEnvironment k_noisy_environment = 14;
+  optional KKidsSpeech k_kids_speech = 15;
+  optional KForeignerSpeech k_foreigner_speech = 16;
+  optional KKorengMix k_koreng_mix = 17;
+  optional KMainFieldMeeting k_main_field_meeting = 18;
+  optional KLiteratureReading k_literature_reading = 19;
+  optional KBroadcastDialogic k_broadcast_dialogic = 20;
+}
+
+message KWelfareCallcenter {
+
+    message Inputtext {
+        optional string orgtext = 1;
+    }
+
+    message Dialogs {
+        optional string audioPath = 1;
+    }
+
+    message Metadata {
+        optional string title = 1;
+        optional string category1 = 2;
+        optional string category2 = 3;
+        optional string category3 = 4;
+        optional string speaker_type = 5;
+        optional string speaker_id = 6;
+        optional string speaker_age = 7;
+        optional string speaker_sex = 8;
+        optional string sptime_all = 9;
+        optional string sptime_start = 10;
+        optional string sptime_end = 11;
+        optional string rec_device = 12;
+        optional string rec_place = 13;
+    }
+
+    message Info {
+        optional Metadata metadata = 1;
+    }
+
+    repeated Inputtext inputText = 1;
+    repeated Dialogs dialogs = 2;
+    repeated Info info = 3;
+}
+
+message KNoisyEnvironment {
+
+    message Typeinfo {
+        optional string category = 1;
+        optional string subCategory = 2;
+        optional string place = 3;
+        optional string bgnoisespl = 4;
+        optional string avgnoisespl = 5;
+        optional string distance = 6;
+    }
+
+    message Speakers {
+        optional string speaker = 1;
+        optional string gender = 2;
+        optional string ageGroup = 3;
+    }
+
+    message Dialogs {
+        optional string speaker = 1;
+        optional string speakerText = 2;
+        optional string startTime = 3;
+        optional string endTime = 4;
+        optional string speakTime = 5;
+        optional string vocalVolume = 6;
+    }
+
+    message Samplingrate {
+        optional uint32 samplingRateResolution = 1;
+        optional double samplingRateFrequency = 2;
+    }
+
+    optional string dataSet = 1;
+    optional string version = 2;
+    optional string mediaUrl = 3;
+    optional string date = 4;
+    repeated Typeinfo typeInfo = 5;
+    optional string conversationType = 6;
+    optional string speakerNumber = 7;
+    repeated Speakers speakers = 8;
+    repeated Dialogs dialogs = 9;
+    optional Samplingrate samplingRate = 10;
+    optional string recStime = 11;
+    optional uint32 recLen = 12;
+    optional string recDevice = 13;
+}
+
+message KKidsSpeech {
+
+    message WAV {
+        optional string NumberOfBit = 1;
+        optional string SignalToNoiseRatio = 2;
+        optional string NumberOfChannel = 3;
+        optional string EncodingLaw = 4;
+        optional string ByteOrder = 5;
+        optional string SamplingRate = 6;
+    }
+
+    message ENVIRONMENT {
+        optional string RecordingEnviron = 1;
+        optional string NoiseEnviron = 2;
+        optional string RecordingDevices = 3;
+    }
+
+    message SPEAKER {
+        optional string SpeakerName = 1;
+        optional string Gender = 2;
+        optional string Age = 3;
+        optional string AgeGroup = 4;
+        optional string Region = 5;
+        optional string Dialect = 6;
+        optional string Fluency = 7;
+        optional string SchoolYear = 8;
+    }
+
+    message OTHER {
+        optional string QualityStatus = 1;
+        optional string IncName = 2;
+    }
+
+    message FILE {
+        optional string FileCategory = 1;
+        optional string FileName = 2;
+        optional string DirectoryPath = 3;
+        optional string HeaderSize = 4;
+        optional string FileLength = 5;
+        optional string FileFormat = 6;
+        optional string NumberOfRepeat = 7;
+        optional string TimeInterval = 8;
+        optional string Distance = 9;
+    }
+
+    message BASIC {
+        optional string DataCategory = 1;
+        optional string Distributor = 2;
+        optional string Language = 3;
+        optional string Version = 4;
+        optional string NumberOfUtterance = 5;
+        optional string RevisionHistory = 6;
+        optional string NumberOfSpeaker = 7;
+        optional string FillingDate = 8;
+        optional string RecordingDate = 9;
+        optional string ApplicationCategory = 10;
+    }
+
+    message TRANSCRIPTION {
+        optional string LabelText = 1;
+        optional string ErrorTagged = 2;
+        optional string GrammaticalError = 3;
+    }
+
+    message MISCELLANEOUS_INFO {
+        optional string SpeechStart = 1;
+        optional string SpeechEnd = 2;
+    }
+
+    optional WAV Wav = 1;
+    optional ENVIRONMENT Environment = 2;
+    optional SPEAKER Speaker = 3;
+    optional OTHER Other = 4;
+    optional FILE File = 5;
+    optional BASIC Basic = 6;
+    optional TRANSCRIPTION Transcription = 7;
+    optional MISCELLANEOUS_INFO Miscellaneous_Info = 8;
+}
+
+message KForeignerSpeech {
+
+    message File_info {
+        optional string speakerID = 1;
+        optional string sentenceID = 2;
+        optional string recordUnit = 3;
+        optional string recordQuality = 4;
+        optional string recordDate = 5;
+        optional string recordTime = 6;
+    }
+
+    message Transcription {
+        optional string Reading = 1;
+        optional string ReadingLabelText = 2;
+        optional string Question = 3;
+        optional string AnswerLabelText = 4;
+        optional string SentenceSpeechLV = 5;
+    }
+
+    message Basic_info {
+        optional string gender = 1;
+        optional string birthYear = 2;
+        optional string eduBackground = 3;
+    }
+
+    message Residence_info {
+        optional string country = 1;
+        optional string residencePeriod = 2;
+        optional string residenceCity = 3;
+    }
+
+    message Skill_info {
+        optional string languageClass = 1;
+        optional string motherTongue = 2;
+        optional string selfAssessment = 3;
+        optional string topikGrade = 4;
+        optional string LearningPeriod = 5;
+        optional string learningSource = 6;
+    }
+
+    optional string fileName = 1;
+    optional File_info file_info = 2;
+    optional Transcription transcription = 3;
+    optional string SpeakerID = 4;
+    optional Basic_info basic_info = 5;
+    optional Residence_info residence_info = 6;
+    optional Skill_info skill_info = 7;
+}
+
+message KKorengMix {
+
+    message Speakers {
+        optional string gender = 1;
+        optional string area = 2;
+        optional string age = 3;
+        optional string ability = 4;
+        optional string accent = 5;
+        optional string speaker_id = 6;
+    }
+
+    message Typeinfo {
+        optional string category = 1;
+        optional string subcategory = 2;
+        optional string place = 3;
+        repeated Speakers speakers = 4;
+    }
+
+    message Expression {
+        optional string form = 1;
+        optional string baseForm = 2;
+        optional string originalForm = 3;
+        optional string sign = 4;
+    }
+
+    message Dialogs {
+        optional string speaker_id = 1;
+        optional string text = 2;
+        optional string startTime = 3;
+        optional string endTime = 4;
+        repeated Expression expression = 5;
+    }
+
+    optional string version = 1;
+    optional string subject = 2;
+    optional string data_name = 3;
+    optional string date = 4;
+    optional Typeinfo typeInfo = 5;
+    repeated Dialogs dialogs = 6;
+}
+
+message KMainFieldMeeting {
+
+    message Metadata {
+        optional string title = 1;
+        optional string creator = 2;
+        optional string distributor = 3;
+        optional uint32 year = 4;
+        optional string category = 5;
+        optional string date = 6;
+        optional string media = 7;
+        optional string communication = 8;
+        optional string type = 9;
+        optional string domain = 10;
+        optional string topic = 11;
+        optional uint32 speaker_num = 12;
+        optional string organization = 13;
+        optional string annotation_level = 14;
+        optional string sampling = 15;
+    }
+
+    message Speaker {
+        optional string id = 1;
+        optional string name = 2;
+        optional string age = 3;
+        optional string occupation = 4;
+        optional string role = 5;
+        optional string sex = 6;
+    }
+
+    message Setting {
+        optional string relation = 1;
+    }
+
+    message Utterance {
+        optional string id = 1;
+        optional string start = 2;
+        optional string end = 3;
+        optional string speaker_id = 4;
+        optional string speaker_role = 5;
+        optional string form = 6;
+        optional string original_form = 7;
+        optional string environment = 8;
+        optional bool isIdiom = 9;
+        message Hangeultoenglish {
+            optional uint32 id = 1;
+            optional string hangeul = 2;
+            optional string english = 3;
+            optional uint32 begin = 4;
+            optional uint32 end = 5;
+        }
+        repeated Hangeultoenglish hangeulToEnglish = 10;
+        message Hangeultonumber {
+            optional uint32 id = 1;
+            optional string hangeul = 2;
+            optional string number = 3;
+            optional uint32 begin = 4;
+            optional uint32 end = 5;
+        }
+        repeated Hangeultonumber hangeulToNumber = 11;
+        message Term {
+            optional uint32 id = 1;
+            optional string hangeul = 2;
+            optional uint32 begin = 3;
+            optional uint32 end = 4;
+        }
+        repeated Term term = 12;
+    }
+
+    optional Metadata metadata = 1;
+    repeated Speaker speaker = 2;
+    optional Setting setting = 3;
+    repeated Utterance utterance = 4;
+}
+
+
+message KLiteratureReading {
+}
+
+message KBroadcastDialogic {
+}
