@@ -30,9 +30,10 @@ Host neuron
     Port 22
     ForwardX11 yes
 ```
-After saving the file, you only need to run:Bashssh neuron
-
----
+After saving the file, you only need to run:
+```bash
+ssh neuron
+```
 
 ### 💡  Tip: Passwordless Login (SSH Keys)
 
