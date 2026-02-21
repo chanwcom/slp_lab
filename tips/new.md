@@ -71,9 +71,8 @@ cds
 
 ## 4. Cheat Sheet 📝
 
----------------------
-Command | Description
--------------------
-ssh neuron | Connect to the cluster
-cds | Move to work directory
-exit  | Logout from the session
+|    Command |       Description       |
+|------------|-------------------------|
+| ssh neuron | Connect to the cluster  |
+| cds        | Move to work directory  |
+| exit       | Logout from the session |
