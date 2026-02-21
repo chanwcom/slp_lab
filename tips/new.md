@@ -1,4 +1,4 @@
- KISTI Cluster Quick Start Guide
+# KISTI Cluster Quick Start Guide
 
 ## Table of Contents
 1. [How to Log On](#1-how-to-log-on)
@@ -69,6 +69,7 @@ cds
   -  Notion Guide: Written by Yanghun Ham
     : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
 
+---
 ## 4. Cheat Sheet 📝
 
 |    Command |       Description       |
