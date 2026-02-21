@@ -36,15 +36,15 @@ After saving the file, you only need to run:Bashssh neuron
 
 ### 💡  Tip: Passwordless Login (SSH Keys)
 
-To log on without typing your password every time, use an Ed25519 key pair.
+To log on without typing your password every time, use an Ed25519 key pair:
 
 1. Generate the key:
-```Bash
+```bash
 ssh-keygen -t ed25519
 ```
 
 2. Copy the key to the server:
-```Bash
+```bash
 ssh-copy-id -i ~/.ssh/id_ed25519.pub neuron
 ```
 ---
