@@ -84,6 +84,7 @@ cds
 ```bash
  ssh gdebug01 or gdebug02
 ```
+  - As of Feb. 2026, debug nodes are equipped with V100 with 16 GB VRAM.
 
 ## 5. Useful Tips & Links
   -  Operating System: Rocky Linux
