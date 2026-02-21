@@ -57,6 +57,8 @@ cds
 ---
 ## 3. Useful Tips & Links
   -  Operating System: Rocky Linux
+  -  Official Neuron Guide
+    : https://docs-ksc.gitbook.io/neuron-user-guide/undefined/user-environment
   -  Notion Guide: Written by Yanghun Ham
     : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
 
