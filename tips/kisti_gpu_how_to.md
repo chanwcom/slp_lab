@@ -63,10 +63,12 @@ cds
 ---
 ## 4. 📝 Cheat Sheet
 
-|    Command |       Description       |
-|------------|-------------------------|
-| ssh neuron | Connect to the cluster  |
-| cds        | Move to work directory  |
+|    Command |       Description            | Comments  |
+|------------|------------------------------|-----------|
+| ssh neuron | Connect to the cluster       |           |
+| cds        | Move to work directory       |           |
+| quotainfo  | Show Filesystem Quota Status |           |
+| isam       | Check the remaining SRU time   |     https://www.youtube.com/watch?v=1k6Gpke54Uk      |
 
 | Category | Command | Description | Example / Usage |
 | :--- | :--- | :--- | :--- |
