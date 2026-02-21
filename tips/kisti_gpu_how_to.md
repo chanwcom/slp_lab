@@ -1,55 +1,69 @@
-# Contents
-1. [How to log on?](#How-to-Log-On-to-the-KISTI-Cluster)
-2. [Set up the environment]()
+# KISTI Cluster Quick Start Guide
 
-## How to Log On to the KISTI Cluster?
+## Table of Contents
+1. [How to Log On](#1-how-to-log-on)
+2. [Environment Setup](#2-environment-setup)
+3. [Useful Tips & Links](#3-useful-tips--links)
 
-1. Run the following command from the Linux prompt:
+---
+
+## 1. How to Log On
+
+### Standard Method
+Run the following command from your Linux prompt:
 ```bash
-$ssh -X x3397a01@neuron.ksc.re.kr
+ssh -X x3397a01@neuron.ksc.re.kr
 ```
 
- - [Tip] Instead of doing this, we may create the following ssh config file:
+---
+
+### 💡 Tip: Simplify with SSH Config
+
+Instead of typing the full address every time, 
+you can create an SSH configuration file. 
+Add the following block to your local `~/.ssh/config` file:Plaintext
+
 ```
-# 1. KSC Neuron server (including -X option)
 Host neuron
     HostName neuron.ksc.re.kr
     User x3397a01
     Port 22
     ForwardX11 yes
 ```
-Please put this file under ~/.ssh/config. After doing this, you only need to run
-the following command:
-```bash
-$ssh neuron
-```
- - [Tip]
-Run the following command to log on without typing the ssh password every time:
-```
-ssh-keygen -t ed25519
-```
+After saving the file, you only need to run:Bashssh neuron
 
-```
-ssh-copy-id -i ~/.ssh/id_ed25519.pub neuron
-```
+---
 
-2. Type the OTP password and password.
- - Use AnyOTP to get your current OTP password.
+### 💡  Tip: Passwordless Login (SSH Keys)
 
- - Tip: If you 
+Passwordless login via public keys is disabled on the KISTI cluster. 
+Therefore, you cannot bypass the password prompt using RSA or Ed25519 keys.
+
+## 2. Environment Setup
+
+### Authentication
+When prompted, enter your credentials in this order:
+1. **OTP Password**: Use the **AnyOTP** app to get your current code.
+2. **Account Password**: Your standard KISTI account password.
 
 
-## Set Up the Environment.
-1. Move to the work directory by typing the following command:
+### Navigating to Work Directory
+Move to your work directory instantly by typing:
+
 ```bash
 cds
 ```
+---
+## 3. Useful Tips & Links
+  -  Operating System: Rocky Linux
+  -  Notion Guide: Written by Yanghun Ham
+    : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
 
-# More tips
- - Operating System: Ricky Linux
+---
+## 4. Cheat Sheet 📝
 
-# Useful links:
- - Notion article writteen by Yanghun Ham:
-     : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
-
-# Cheat Sheet
+|    Command |       Description       |
+|------------|-------------------------|
+| ssh neuron | Connect to the cluster  |
+| cds        | Move to work directory  |
+| exit       | Logout from the session |
