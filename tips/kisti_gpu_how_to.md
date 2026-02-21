@@ -3,7 +3,9 @@
 ## Table of Contents
 1. [How to Log On](#1-how-to-log-on)
 2. [Environment Setup](#2-environment-setup)
-3. [Useful Tips & Links](#3-useful-tips--links)
+3. [Code Development & Debug](#3-code-development--debug)
+4. [Launch Job]
+5. [Useful Tips & Links](#5-useful-tips--links)
 
 ---
 
@@ -55,7 +57,9 @@ Move to your work directory instantly by typing:
 cds
 ```
 ---
-## 3. Useful Tips & Links
+## 3. Code Development and Debug
+
+## 5. Useful Tips & Links
   -  Operating System: Rocky Linux
   -  Official Neuron Guide
     : https://docs-ksc.gitbook.io/neuron-user-guide/undefined/user-environment
