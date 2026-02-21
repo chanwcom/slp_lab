@@ -74,7 +74,7 @@ cds
 ### Data copy
 - Copy the training or testing data using the **Datamover** server. The following is an example:
   ```bash
-  scp -r libri_light/ neuron:/scratch/x3397a01/chanwcom/database
+  scp -r libri_light/ neuron-dm:/scratch/x3397a01/chanwcom/database
   ```
 
 ### Debug
