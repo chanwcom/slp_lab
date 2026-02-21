@@ -1,7 +1,7 @@
 # Contents
-1. [How to log on?](#logon)
+1. [How to log on?](#How-to-Log-On-to-the-KISTI-Cluster)
 
-## How-to-logon?
+## How to Log On to the KISTI Cluster?
 
 End
 
