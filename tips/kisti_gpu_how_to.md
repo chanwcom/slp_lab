@@ -57,13 +57,13 @@ Therefore, you **cannot** bypass the password prompt using RSA or Ed25519 keys.
 ## 2. Environment Setup
 
 ### Authentication
-When prompted, enter your credentials in this order:
-1. **OTP Password**: Use the **AnyOTP** app to get your current code.
-2. **Account Password**: Your standard KISTI account password.
+- When prompted, enter your credentials in this order:
+ 1. **OTP Password**: Use the **AnyOTP** app to get your current code.
+ 2. **Account Password**: Your standard KISTI account password.
 
 
 ### Navigating to Work Directory
-Move to your work directory instantly by typing:
+- Move to your work directory instantly by typing:
 
 ```bash
 cds
