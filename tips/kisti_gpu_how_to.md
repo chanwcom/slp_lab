@@ -1,5 +1,6 @@
 # Contents
 1. [How to log on?](#How-to-Log-On-to-the-KISTI-Cluster)
+2. [Set up the environment]()
 
 ## How to Log On to the KISTI Cluster?
 
@@ -20,11 +21,20 @@ Host neuron
 Please put this file under ~/.ssh/config. After doing this, you only need to run
 the following command:
 ```bash
-$ssh -X neuron
+$ssh neuron
 ```
 
 2. Type the OTP password and password.
  - Use AnyOTP to get your current OTP password.
+
+ - Tip: If you 
+
+
+## Set Up the Environment.
+1. Move to the work directory by typing the following command:
+```bash
+cds
+```
 
 # More tips
  - Operating System: Ricky Linux
