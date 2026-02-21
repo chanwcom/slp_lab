@@ -36,18 +36,8 @@ After saving the file, you only need to run:Bashssh neuron
 
 ### 💡  Tip: Passwordless Login (SSH Keys)
 
-To log on without typing your password every time, use an Ed25519 key pair:
-
-1. Generate the key:
-```bash
-ssh-keygen -t ed25519
-```
-
-2. Copy the key to the server:
-```bash
-ssh-copy-id -i ~/.ssh/id_ed25519.pub neuron
-```
----
+Passwordless login via public keys is disabled on the KISTI cluster. 
+Therefore, you cannot bypass the password prompt using RSA or Ed25519 keys.
 
 ## 2. Environment Setup
 
