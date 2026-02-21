@@ -59,6 +59,12 @@ cds
 ---
 ## 3. Code Development and Debug
 
+### Debug
+Directly log on to the debug servers (gdebug01 or gdebug02)
+```bash
+ ssh gdebug01 or gdebug02
+```
+
 ## 5. Useful Tips & Links
   -  Operating System: Rocky Linux
   -  Official Neuron Guide
