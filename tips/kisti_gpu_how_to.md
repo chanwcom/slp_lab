@@ -47,7 +47,7 @@ ssh neuron
 
 ### 💡  Tip: Datamover server
  - The CPU limit in the login server is 2 hours. Therefore, when you copy data, please use the datamover server.
-   The following is an example:
+
    
 ### 💡  Tip: Passwordless Login (SSH Keys)
 
@@ -68,14 +68,16 @@ Move to your work directory instantly by typing:
 ```bash
 cds
 ```
----
-## 3. Code Development and Debug
 
-### Data copy
-- Copy the training or testing data using the **Datamover** server. The following is an example:
+### Moving Data to the Cluster
+- Copy the training or testing data using the **Datamover** node. The following is an example:
   ```bash
   scp -r libri_light/ neuron-dm:/scratch/x3397a01/chanwcom/database
   ```
+---
+## 3. Code Development and Debug
+
+
 
 ### Debug
 - Directly log on to the debug servers (gdebug01 or gdebug02)
