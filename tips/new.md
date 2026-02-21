@@ -68,9 +68,12 @@ cds
   -  Operating System: Rocky Linux
   -  Notion Guide: Written by Yanghun Ham
     : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
-📝 Cheat Sheet
 
-Command Description
-ssh neuronConnect to the clustercds
-Move to work directory
-exit  Logout from the session
+## 4. Cheat Sheet 📝
+
+---------------------
+Command | Description
+-------------------
+ssh neuron | Connect to the cluster
+cds | Move to work directory
+exit  | Logout from the session
