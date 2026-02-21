@@ -3,7 +3,10 @@
 
 ## How to Log On to the KISTI Cluster?
 
-End
+Run the following command from the Linux prompt:
+```bash
+$ssh -X x3397a01@neuron.ksc.re.kr
+```
 
 # More tips
  - Operating System: Ricky Linux
