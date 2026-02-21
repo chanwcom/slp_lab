@@ -26,8 +26,16 @@ you can create an SSH configuration file.
 Add the following block to your local `~/.ssh/config` file:Plaintext
 
 ```
+# 1. KSC Neuron server (including -X option)
 Host neuron
     HostName neuron.ksc.re.kr
+    User x3397a01
+    Port 22
+    ForwardX11 yes
+
+# 2. KSC Neuron Datamover server (including -X option)
+Host neuron-dm
+    HostName neuron-dm.ksc.re.kr
     User x3397a01
     Port 22
     ForwardX11 yes
@@ -37,6 +45,10 @@ After saving the file, you only need to run:
 ssh neuron
 ```
 
+### 💡  Tip: Datamover server
+ - The CPU limit in the login server is 2 hours. Therefore, when you copy data, please use the datamover server.
+   The following is an example:
+   
 ### 💡  Tip: Passwordless Login (SSH Keys)
 
 Passwordless login via public keys is disabled on the KISTI cluster. 
@@ -59,8 +71,14 @@ cds
 ---
 ## 3. Code Development and Debug
 
+### Data copy
+- Copy the training or testing data using the **Datamover** server. The following is an example:
+  ```bash
+  scp -r libri_light/ neuron:/scratch/x3397a01/chanwcom/database
+  ```
+
 ### Debug
-Directly log on to the debug servers (gdebug01 or gdebug02)
+- Directly log on to the debug servers (gdebug01 or gdebug02)
 ```bash
  ssh gdebug01 or gdebug02
 ```
