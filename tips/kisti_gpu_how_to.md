@@ -49,10 +49,10 @@ ssh neuron
  - The CPU limit in the login server is 2 hours. Therefore, when you copy data, please use the datamover server.
 
    
-### 💡  Tip: Passwordless Login (SSH Keys)
+### 💡  Tip: Passwordless Login (SSH Keys) Is **Disabled**
 
-Passwordless login via public keys is disabled on the KISTI cluster. 
-Therefore, you cannot bypass the password prompt using RSA or Ed25519 keys.
+Passwordless login via public keys is **disabled** on the KISTI cluster. 
+Therefore, you **cannot** bypass the password prompt using RSA or Ed25519 keys.
 
 ## 2. Environment Setup
 
