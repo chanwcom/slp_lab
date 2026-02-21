@@ -3,10 +3,12 @@
 
 ## How to Log On to the KISTI Cluster?
 
-Run the following command from the Linux prompt:
+1. Run the following command from the Linux prompt:
 ```bash
 $ssh -X x3397a01@neuron.ksc.re.kr
 ```
+2. Type the OTP password and password.
+ - Use AnyOTP to get your current OTP password.
 
 # More tips
  - Operating System: Ricky Linux
