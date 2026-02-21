@@ -14,8 +14,12 @@ Run the following command from your Linux prompt:
 ```bash
 ssh -X x3397a01@neuron.ksc.re.kr
 ```
+
 ---
-# 💡 Tip: Simplify with SSH ConfigInstead of typing the full address every time, 
+
+### 💡 Tip: Simplify with SSH Config
+
+Instead of typing the full address every time, 
 you can create an SSH configuration file. 
 Add the following block to your local `~/.ssh/config` file:Plaintext
 
@@ -29,7 +33,9 @@ Host neuron
 After saving the file, you only need to run:Bashssh neuron
 
 ---
-# 💡  Tip: Passwordless Login (SSH Keys)
+
+### 💡  Tip: Passwordless Login (SSH Keys)
+
 To log on without typing your password every time, use an Ed25519 key pair:
 Generate the key:
 ```bash
