@@ -37,7 +37,7 @@ Copy the key to the server:
 ```bash
 ssh-copy-id -i ~/.ssh/id_ed25519.pub neuron
 ```
----
+--
 
 ## 2. Environment Setup
 
