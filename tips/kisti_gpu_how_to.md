@@ -7,6 +7,22 @@
 ```bash
 $ssh -X x3397a01@neuron.ksc.re.kr
 ```
+
+Instead of doing this, we may create the following ssh config file:
+```
+# 1. KSC Neuron server (including -X option)
+Host neuron
+    HostName neuron.ksc.re.kr
+    User x3397a01
+    Port 22
+    ForwardX11 yes
+```
+Please put this file under ~/.ssh/config. After doing this, you only need to run
+the following command:
+```bash
+$ssh -X neuron
+```
+
 2. Type the OTP password and password.
  - Use AnyOTP to get your current OTP password.
 
