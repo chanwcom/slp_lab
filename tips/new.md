@@ -13,6 +13,7 @@
 Run the following command from your Linux prompt:
 ```bash
 ssh -X x3397a01@neuron.ksc.re.kr
+```
 💡 Tip: Simplify with SSH ConfigInstead of typing the full address every time, 
 you can create an SSH configuration file. 
 Add the following block to your local `~/.ssh/config` file:Plaintext
@@ -36,6 +37,8 @@ Copy the key to the server:
 ```bash
 ssh-copy-id -i ~/.ssh/id_ed25519.pub neuron
 ```
+---
+
 ## 2. Environment Setup
 
 ### Authentication
@@ -43,7 +46,6 @@ When prompted, enter your credentials in this order:
 1. **OTP Password**: Use the **AnyOTP** app to get your current code.
 2. **Account Password**: Your standard KISTI account password.
 
----
 
 ### Navigating to Work Directory
 Move to your work directory instantly by typing:
