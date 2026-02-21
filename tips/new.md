@@ -63,7 +63,7 @@ Move to your work directory instantly by typing:
 ```bash
 cds
 ```
-
+---
 ## 3. Useful Tips & Links
   -  Operating System: Rocky Linux
   -  Notion Guide: Written by Yanghun Ham
