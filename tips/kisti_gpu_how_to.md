@@ -61,10 +61,23 @@ cds
     : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
 
 ---
-## 4. Cheat Sheet 📝
+## 4. 📝 Cheat Sheet
 
 |    Command |       Description       |
 |------------|-------------------------|
 | ssh neuron | Connect to the cluster  |
 | cds        | Move to work directory  |
-| exit       | Logout from the session |
+
+| Category | Command | Description | Example / Usage |
+| :--- | :--- | :--- | :--- |
+| **Submission** | `sbatch [file]` | Submit a batch script to the queue | `sbatch train.sh` |
+| **Submission** | `srun --pty bash` | Interactive login to a compute node | `srun -p amd_a100nv_8 --gres=gpu:1 --pty bash` |
+| **Monitoring** | `squeue` | View all active jobs in the system | `squeue` |
+| **Monitoring** | `squeue -u $USER` | View only **your** jobs | `squeue -u $USER` |
+| **Monitoring** | `sinfo` | View partition and node status | `sinfo -p amd_a100nv_8` |
+| **Management** | `scancel [id]` | Cancel a specific job | `scancel 12345` |
+| **Management** | `scancel -u $USER` | Cancel **all** of your jobs | `scancel -u $USER` |
+| **Details** | `scontrol show job` | Show detailed job configuration | `scontrol show job 12345` |
+| **History** | `sacct` | Display accounting data for past jobs | `sacct -j 12345` |
+| **Quota** | `sshare` | Check your remaining budget/priority | `sshare -U $USER` |
+| **Priority** | `sprio` | View factors affecting job priority | `sprio -j 12345` |
