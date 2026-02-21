@@ -9,7 +9,7 @@
 $ssh -X x3397a01@neuron.ksc.re.kr
 ```
 
-Instead of doing this, we may create the following ssh config file:
+ - [Tip] Instead of doing this, we may create the following ssh config file:
 ```
 # 1. KSC Neuron server (including -X option)
 Host neuron
@@ -22,6 +22,15 @@ Please put this file under ~/.ssh/config. After doing this, you only need to run
 the following command:
 ```bash
 $ssh neuron
+```
+ - [Tip]
+Run the following command to log on without typing the ssh password every time:
+```
+ssh-keygen -t ed25519
+```
+
+```
+ssh-copy-id -i ~/.ssh/id_ed25519.pub neuron
 ```
 
 2. Type the OTP password and password.
@@ -42,3 +51,5 @@ cds
 # Useful links:
  - Notion article writteen by Yanghun Ham:
      : https://debonair-editor-3de.notion.site/Kisti-gpu-2e3100011f688073b102f65dff13f0e1?source=copy_link
+
+# Cheat Sheet
