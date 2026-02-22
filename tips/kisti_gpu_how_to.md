@@ -135,7 +135,7 @@ conda activate py3_10_hf
 ```
 module load cuda/12.9.1
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
-pip3 install transformers[torch] datasets evaluate
+pip3 install transformers[torch] datasets evaluate torchcodec
 pip3 install sentencepiece
 pip3 install webdataset
 ```
