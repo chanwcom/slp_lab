@@ -89,11 +89,45 @@ cds
 
 
 ### Debug
-- Directly log on to the debug servers (gdebug01 or gdebug02)
+- Directly log on to the debug nodes (gdebug01 or gdebug02)
 ```bash
  ssh gdebug01 or gdebug02
 ```
   - As of Feb. 2026, debug nodes are equipped with V100 with 16 GB VRAM.
+---
+### Job Launch
+ - If you think your code runs smoothly when tested in the debug node, submit the job:
+``` bash
+   sbatch job.sh
+```
+ - The following shows an example of `job.sh`
+```
+#!/bin/bash
+
+
+#SBATCH -J shc_48_batch_org_ctc
+#SBATCH -p amd_a100nv_8
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH -o /scratch/x3397a01/chanwcom/experiments/log/%x_%j.out
+#SBATCH -e /scratch/x3397a01/chanwcom/experiments/log/%x_%j.err
+#SBATCH --time=0-04:00:00 #4 hours
+#SBATCH --cpus-per-task=8
+#SBATCH --gres=gpu:1
+#SBATCH --comment=python
+
+HOME=chanwcom
+# Set up the environment
+module purge
+module load cuda/12.9.1  # Use PyTorch cu129 build
+source /apps/applications/Miniconda/23.3.1/etc/profile.d/conda.sh
+conda activate py3_10_hf
+
+# Run your code (This is a single GPU job case)
+cd /scratch/x3397a01/$HOME/local_repository/cognitive_workflow_kit/run
+#srun python wav2vec_finetuning_shc.py --vocab_size=32
+python wav2vec_finetuning_shc.py --vocab_size=32
+```
 
 ## 5. Useful Tips & Links
   -  Operating System: Rocky Linux
