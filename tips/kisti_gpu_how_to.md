@@ -94,9 +94,11 @@ cds
  ssh gdebug01 or gdebug02
 ```
   - As of Feb. 2026, debug nodes are equipped with V100 with 16 GB VRAM.
+  - In the debug node, a very limited amount of VARM will be assigned to you, so please reduce the batch size.
+    (A rule of thumb is that when you change the batch size, you also need to change the learning rate in proportion).
 ---
 ## 4. Job Launch
- - If you think your code runs smoothly when tested in the debug node, submit the job:
+ - If you think your code runs smoothly when tested in the debug node (that is mentioned in the previosu section), submit the job:
 ``` bash
    sbatch job.sh
 ```
