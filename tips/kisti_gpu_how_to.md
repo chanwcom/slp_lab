@@ -59,7 +59,7 @@ Therefore, you **cannot** bypass the password prompt using RSA or Ed25519 keys.
 
 ### Authentication
 - When prompted, enter your credentials in this order:
-    1. **OTP Password**: Use the **AnyOTP** app to get your current code.
+    1. **OTP Password**: Use the **AnyOTP** app to get your current one-time password.
     2. **Account Password**: Your standard KISTI account password.
 
 
