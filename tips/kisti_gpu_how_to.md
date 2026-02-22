@@ -4,7 +4,7 @@
 1. [How to Log On](#1-how-to-log-on)
 2. [Environment Setup](#2-environment-setup)
 3. [Code Development and Debug](#3-code-development-and-debug)
-4. [Launch Job]
+4. [Launch Job](#4-job-launch)
 5. [Useful Tips & Links](#5-useful-tips--links)
 6. [Example of Making a Conda Environment]
 
@@ -95,7 +95,7 @@ cds
 ```
   - As of Feb. 2026, debug nodes are equipped with V100 with 16 GB VRAM.
 ---
-### Job Launch
+## 4. Job Launch
  - If you think your code runs smoothly when tested in the debug node, submit the job:
 ``` bash
    sbatch job.sh
