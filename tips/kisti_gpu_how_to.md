@@ -75,6 +75,14 @@ cds
   scp -r libri_light/ neuron-dm:/scratch/x3397a01/chanwcom/database
   ```
 ---
+### Creating and activating Conda Environment
+ - 💡 You do NOT need to install conda binary since it has been already set up.
+ - Just create an appropriate conda environment:
+   ```bash
+   conda create --name py3_10_hf python=3.10
+   conda activate py3_10_hf
+   ```
+
 ## 3. Code Development and Debug
 
 
