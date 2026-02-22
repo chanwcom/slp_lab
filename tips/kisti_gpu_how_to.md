@@ -6,6 +6,7 @@
 3. [Code Development and Debug](#3-code-development-and-debug)
 4. [Launch Job]
 5. [Useful Tips & Links](#5-useful-tips--links)
+6. [Example of Making a Conda Environment]
 
 ---
 
@@ -124,3 +125,19 @@ cds
 | **History** | `sacct` | Display accounting data for past jobs | `sacct -j 12345` |
 | **Quota** | `sshare` | Check your remaining budget/priority | `sshare -U $USER` |
 | **Priority** | `sprio` | View factors affecting job priority | `sprio -j 12345` |
+
+
+## 6. Example of Making a Conda Environment
+```
+conda create --name py3_10_hf python=3.10
+conda activate py3_10_hf
+```
+```
+module load cuda/12.9.1
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+pip3 install transformers datasets evaluate
+pip3 install sentencepiece
+pip3 install webdataset
+```
+
+
