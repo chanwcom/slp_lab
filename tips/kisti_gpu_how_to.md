@@ -147,6 +147,7 @@ python wav2vec_finetuning_shc.py --vocab_size=32
 | cds        | Move to work directory       |           |
 | quotainfo  | Show Filesystem Quota Status |           |
 | isam       | Check the remaining SRU time   |     https://www.youtube.com/watch?v=1k6Gpke54Uk      |
+| overview_nodes  | Show the status of the cluser |           |
 
 | Category | Command | Description | Example / Usage |
 | :--- | :--- | :--- | :--- |
