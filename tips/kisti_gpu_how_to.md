@@ -185,6 +185,9 @@ pip3 install webdataset
 - The following is not needed if you do NOT need to run neovim, xclip or zoxide.
 
 ### nvim
+```
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+```
 
 ### xclip
 ```
