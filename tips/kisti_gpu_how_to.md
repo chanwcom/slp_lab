@@ -98,7 +98,8 @@ cds
     (A rule of thumb is that when you change the batch size, you also need to change the learning rate in proportion).
 ---
 ## 4. Job Launch
- - If you think your code runs smoothly when tested in the debug node (that is mentioned in the previosu section), submit the job:
+ - If you think your code runs smoothly when tested in the debug node (that is mentioned in the previosu section),
+   submit the job using the following command:
 ``` bash
    sbatch job.sh
 ```
@@ -177,4 +178,45 @@ pip3 install sentencepiece
 pip3 install webdataset
 ```
 
-`transformers[torch] ` will 
+`transformers[torch] ` will install extra tools for torch.
+
+## 7. Installing extra programs
+
+- The following is not needed if you do NOT need to run neovim, xclip or zoxide.
+
+### nvim
+
+### xclip
+```
+TMPDIR=/scratch/x3397a01/tmp dnf download xclip
+```
+```
+rpm2cpio xclip-0.13-17.git11cba61.el9.x86_64.rpm | cpio -idmv
+```
+```
+cp usr/bin/xclip ~/.local/bin
+```
+
+### zoxide
+```
+cd ~/tmp
+# Downloading the version 0.9.4 (The size is between 1MB~2MB)
+curl -L -o zoxide.tar.gz https://github.com/ajeetdsouza/zoxide/releases/download/v0.9.4/zoxide-0.9.4-x86_64-unknown-linux-musl.tar.gz
+
+# 1. Decompressing
+tar -xzvf zoxide.tar.gz
+
+# 2. Moving the binary
+mv zoxide ~/.local/bin/
+
+# 3. Checking the file size
+ls -l ~/.local/bin/zoxide
+
+# 4. Adding information to ./bashrc
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
+```
+
+```
+source ~/.bashrc
+```
+
