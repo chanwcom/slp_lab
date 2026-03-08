@@ -6,7 +6,7 @@
 3. [Code Development and Debug](#3-code-development-and-debug)
 4. [Launch Job](#4-job-launch)
 5. [Useful Tips & Links](#5-useful-tips--links)
-6. [Example of Making a Conda Environment]
+6. [Example of Making a Conda Environment](#6-example-of-making-a-conda-environment)
 
 ---
 
