@@ -167,15 +167,36 @@ python wav2vec_finetuning_shc.py --vocab_size=32
 
 ## 6. Example of Making a Conda Environment
 ```
-conda create --name py3_10_hf python=3.10
-conda activate py3_10_hf
-```
-```
+#!/bin/bash
+
+# Define the environment name for consistency across the script.
+ENV_NAME="conda_env_name"
+
+# Clear existing modules and load the latest base dependencies.
+module purge
 module load cuda/12.9.1
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
-pip3 install transformers[torch] datasets evaluate torchcodec
-pip3 install sentencepiece
-pip3 install webdataset
+module load python/3.14.2  # Using latest (D) version
+
+source /apps/applications/Miniconda/23.3.1/etc/profile.d/conda.sh
+
+# Create a clean Conda environment using the defined variable.
+conda create -n "${ENV_NAME}" python=3.12 -y
+conda activate "${ENV_NAME}"
+
+# Install PyTorch for CUDA 12.x using the official index for HPC performance.
+pip install torch torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/cu124
+
+# Install Hugging Face ecosystem packages for NLP and model evaluation.
+pip install transformers datasets accelerate evaluate
+
+# Install general-purpose scientific and audio processing utilities.
+pip install numpy sentencepiece soundfile jiwer
+
+# Install the CWK toolkit in editable mode.
+# Ensure execution occurs within the toolkit's root directory.
+# pip install -e .
+
 ```
 
 `transformers[torch] ` will install extra tools for torch.
