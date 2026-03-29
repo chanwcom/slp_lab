@@ -17,7 +17,9 @@ Ensure you have Python installed. It is recommended to use a virtual environment
 ### 2. Install Jupyter Book
 Install the latest version of Jupyter Book via pip:
 
-    pip install -U jupyter-book
+    pip install jupyter-book==1.0.3
+
+There may be advantages in using the newest version (2.X). But it doesn't work with my current jupyter book.
 
 ### 3. Build the Book
 Navigate to the root directory (where _config.yml is located) and run:
