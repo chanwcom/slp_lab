@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Top-level semantic frame",
+    "type": "object",
+    "properties": {
+        "gender": { "type": "string" },
+        "native_english_flag": { "type": "string" },
+        "intents": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/intent" }
+        }
+    },
+    "required": ["gender", "native_english_flag", "intents"],
+    "definitions": {
+        "intent": {
+            "type": "object",
+            "properties": {
+                "intent": { "type": "string" },
+                "slots": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/slot" }
+                }
+            },
+            "required": ["intent"]
+        },
+        "slot": {
+            "type": "object",
+            "properties": {
+                "slot_name": { "type": "string" }
+            },
+            "required": ["slot_name"],
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "slot_value": { "type": "string" }
+                    },
+                    "required": ["slot_value"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "intent": { "$ref": "#/definitions/intent" }
+                    },
+                    "required": ["intent"]
+                }
+            ]
+        }
+    }
+}
