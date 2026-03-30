@@ -20,7 +20,8 @@ test_clean_top_dir = os.path.join(db_top_dir, "test-clean")
 test_other_top_dir = os.path.join(db_top_dir, "test-other")
 
 
-# TODO Complete the following parts:
+# TODO : Prepare Test Datasets and inference Pipelines.
+# Complete the following parts:
 test_clean_dataset = sample_util.make_dataset( ,  )
 test_other_dataset = sample_util.make_dataset( ,  )
 

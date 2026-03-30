@@ -20,16 +20,16 @@ import numpy as np
 import sample_util
 
 # TODO: Correct paths depending on your environment
+#
 db_top_dir = ""
 train_top_dir = os.path.join(db_top_dir, "libri_light/1h")
 test_top_dir = os.path.join(db_top_dir, "test-clean")
-# End of ToDO
+# End of TODO
 
 processor = AutoProcessor.from_pretrained("facebook/wav2vec2-base")
 
 train_dataset = sample_util.make_dataset(train_top_dir)
 test_dataset = sample_util.make_dataset(test_top_dir)
-
 
 def compute_metrics(pred) -> Dict[str, float]:
     """Compute word error rate (WER) between predictions and labels.
@@ -197,7 +197,8 @@ training_args = TrainingArguments(
     push_to_hub=False,
 )
 
-# TODO
+# TODO: Create a Trainer Object
+#
 # Create the Trainer instance to handle training and evaluation.
 # This ties together the model, datasets, tokenizer, data collator, and metrics.
 trainer = Trainer(
